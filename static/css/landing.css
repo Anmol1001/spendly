@@ -232,3 +232,78 @@
 
     .dash-stat-value { font-size: 1.4rem; }
 }
+
+/* ------------------------------------------------------------------ */
+/* Demo video modal                                                    */
+/* ------------------------------------------------------------------ */
+
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.72);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 1.5rem;
+
+    /* Hidden by default — fades in/out */
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.22s ease, visibility 0.22s ease;
+}
+
+.modal-overlay.is-open {
+    opacity: 1;
+    visibility: visible;
+}
+
+.modal-box {
+    position: relative;
+    background: var(--ink);
+    border-radius: var(--radius-lg);
+    width: 100%;
+    max-width: 860px;
+    box-shadow: 0 24px 80px rgba(0, 0, 0, 0.5);
+    overflow: hidden;
+
+    /* Subtle scale-in when opening */
+    transform: scale(0.96);
+    transition: transform 0.22s ease;
+}
+
+.modal-overlay.is-open .modal-box {
+    transform: scale(1);
+}
+
+.modal-close {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.9rem;
+    background: transparent;
+    border: none;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 1.75rem;
+    line-height: 1;
+    cursor: pointer;
+    z-index: 10;
+    padding: 0.2rem 0.4rem;
+    transition: color 0.15s;
+}
+
+.modal-close:hover { color: #fff; }
+
+/* 16 : 9 responsive video wrapper */
+.modal-video-wrap {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+}
+
+.modal-video-wrap iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+}

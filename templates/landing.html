@@ -28,7 +28,7 @@
 
         <div class="hero-actions">
             <a href="{{ url_for('register') }}" class="btn-primary">Create free account</a>
-            <a href="#" class="btn-primary">See how it works</a>
+            <a href="#" class="btn-primary" id="open-demo">See how it works</a>
         </div>
 
         <div class="hero-dashboard">
@@ -109,4 +109,68 @@
     </div>
 </section>
 
+<!-- ── Demo video modal ─────────────────────────────────────────── -->
+<div id="video-modal" class="modal-overlay" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Spendly demo video">
+    <div class="modal-box">
+        <button class="modal-close" aria-label="Close video">&times;</button>
+        <div class="modal-video-wrap">
+            <iframe
+                id="demo-video"
+                src="https://www.youtube.com/embed/dQw4w9WgXcQ?enablejsapi=1"
+                title="Spendly — how it works"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen>
+            </iframe>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+(function () {
+    var modal    = document.getElementById('video-modal');
+    var iframe   = document.getElementById('demo-video');
+    var openBtn  = document.getElementById('open-demo');
+    var closeBtn = modal.querySelector('.modal-close');
+
+    function openModal() {
+        modal.classList.add('is-open');
+        modal.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+        closeBtn.focus();
+    }
+
+    function closeModal() {
+        modal.classList.remove('is-open');
+        modal.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+
+        // Stop the video without reloading the iframe
+        iframe.contentWindow.postMessage(
+            JSON.stringify({ event: 'command', func: 'pauseVideo', args: [] }),
+            '*'
+        );
+    }
+
+    openBtn.addEventListener('click', function (e) {
+        e.preventDefault();
+        openModal();
+    });
+
+    closeBtn.addEventListener('click', closeModal);
+
+    // Click on the dark overlay (outside the box) closes the modal
+    modal.addEventListener('click', function (e) {
+        if (e.target === modal) closeModal();
+    });
+
+    // Escape key also closes the modal
+    document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && modal.classList.contains('is-open')) closeModal();
+    });
+}());
+</script>
 {% endblock %}
